@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// بيانات تجريبية للموردين
 let suppliers: any[] = [
   {
     id: '1',
@@ -18,15 +17,14 @@ let suppliers: any[] = [
   }
 ];
 
-// GET - جلب مورد محدد
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
-    
+    const { id } = params;
     const supplier = suppliers.find(s => s.id === id);
+    
     if (!supplier) {
       return NextResponse.json(
         { success: false, message: 'المورد غير موجود' },
@@ -46,13 +44,12 @@ export async function GET(
   }
 }
 
-// PUT - تحديث مورد
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const body = await request.json();
 
     const supplierIndex = suppliers.findIndex(s => s.id === id);
@@ -82,13 +79,12 @@ export async function PUT(
   }
 }
 
-// DELETE - حذف مورد
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
 
     const supplierIndex = suppliers.findIndex(s => s.id === id);
     if (supplierIndex === -1) {

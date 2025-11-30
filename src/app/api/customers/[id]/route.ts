@@ -19,17 +19,14 @@ let customers: any[] = [
   }
 ];
 
-// GET - جلب عميل محدد
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
-    
-    console.log('GET /api/customers/id - Customer ID:', id);
-
+    const { id } = params;
     const customer = customers.find(c => c.id === id);
+    
     if (!customer) {
       return NextResponse.json(
         { success: false, message: 'العميل غير موجود' },
@@ -42,7 +39,6 @@ export async function GET(
       data: customer 
     });
   } catch (error) {
-    console.error('Error getting customer:', error);
     return NextResponse.json(
       { success: false, message: 'حدث خطأ أثناء جلب بيانات العميل' },
       { status: 500 }
@@ -50,17 +46,13 @@ export async function GET(
   }
 }
 
-// PUT - تحديث عميل
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const { id } = params;
     const body = await request.json();
-
-    console.log('PUT /api/customers/id - Updating customer ID:', id);
-    console.log('Update data:', body);
 
     const customerIndex = customers.findIndex(c => c.id === id);
     if (customerIndex === -1) {
@@ -70,7 +62,6 @@ export async function PUT(
       );
     }
 
-    // تحديث البيانات
     customers[customerIndex] = {
       ...customers[customerIndex],
       ...body,
@@ -83,7 +74,6 @@ export async function PUT(
       data: customers[customerIndex] 
     });
   } catch (error) {
-    console.error('Error updating customer:', error);
     return NextResponse.json(
       { success: false, message: 'حدث خطأ أثناء تحديث العميل' },
       { status: 500 }
@@ -91,15 +81,12 @@ export async function PUT(
   }
 }
 
-// DELETE - حذف عميل
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
-
-    console.log('DELETE /api/customers/id - Deleting customer ID:', id);
+    const { id } = params;
 
     const customerIndex = customers.findIndex(c => c.id === id);
     if (customerIndex === -1) {
@@ -118,7 +105,6 @@ export async function DELETE(
       data: deletedCustomer 
     });
   } catch (error) {
-    console.error('Error deleting customer:', error);
     return NextResponse.json(
       { success: false, message: 'حدث خطأ أثناء حذف العميل' },
       { status: 500 }
