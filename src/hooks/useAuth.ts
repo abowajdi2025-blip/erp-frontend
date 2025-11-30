@@ -1,22 +1,28 @@
-// hooks/useAuth.ts
 import { useState, useEffect } from 'react';
 
-export const useAuth = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export function useAuth() {
+  const [user] = useState<any>({
+    id: 1,
+    name: 'مستخدم تجريبي',
+    email: 'demo@erp.com',
+    role: 'admin'
+  });
+  
+  const [isLoading] = useState(false);
 
-  useEffect(() => {
-    const userData = localStorage.getItem('user_data');
-    if (userData) {
-      try {
-        setUser(JSON.parse(userData));
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-        localStorage.removeItem('user_data');
-      }
-    }
-    setIsLoading(false);
-  }, []);
+  const login = async () => {
+    return { success: true, user };
+  };
 
-  return { user, isLoading };
-};
+  const logout = () => {
+    // تعطيل تسجيل الخروج
+  };
+
+  return {
+    user,
+    isLoading,
+    login,
+    logout,
+    isAuthenticated: true
+  };
+}
